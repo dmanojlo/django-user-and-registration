@@ -1,0 +1,30 @@
+{% extends 'accounts/base.html' %}
+
+{% block content%}
+<div class="container">
+<h1>Ask for item</h1>
+{% for message in messages %}
+<p>{{message}}</p>
+{% endfor %}
+{% for item in object_list %}
+
+  {% if item.quantity > 0 %}
+   <p> <span id="numbering">  {{item.item_name}}, {{item.quantity}} </span> - <a href="{% url 'accounts_app:decrement_quantity' item.id %}">Decrement</a> </p>
+  {% endif %}
+{% endfor %}
+
+</div>
+<!-- script for numbering items in html -->
+<!-- <script type="text/javascript">
+    var pr = document.getElementsByTagName('p');
+    console.log(pr)
+    var text = 'textContent' in document ? 'textContent' : 'innerText';
+
+      for (var i = 1, j = 0; i <= pr.length; i++, j++) {
+
+      pr[j].children[0][text] = i + ' - ' + pr[j].children[0][text];
+
+}
+</script> -->
+
+{% endblock %}

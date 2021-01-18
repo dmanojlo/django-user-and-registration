@@ -1,0 +1,45 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+
+<h1>Create Item</h1>
+
+{% for message in messages%}
+  <p>{{message}}</p>
+{% endfor %}
+
+<form action="." method="POST">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input type="submit" value="Submit">
+</form>
+
+<div class="container-table">
+
+<table class="table">
+          <thead>
+              <tr>
+                  <th>Item name</th>
+                  <th>Quantity</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% for item in object_list %}
+            <tr>
+              <td>{{ item.item_name }}</td>
+              <td>{{ item.quantity }}</td>
+              <form action="{% url 'accounts_app:item_edit_view' item.id %}" method="POST">
+                {% csrf_token %}
+                <td>
+                  <button type="submit" class="btn btn-info js-update-izdano" >Edit</button>
+              </form>
+                  <a href="{% url 'accounts_app:item_delete_view' item.id %}"><button type="button" class="btn btn-danger js-delete-izdano">Delete</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+  </table>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+/* css counters */
+body {
+  margin: 0;
+  padding: 0;
+
+}
+
+.container {
+  counter-reset: section;
+  margin-left: 2%;
+}
+
+ p span::before {
+  counter-increment: section;
+  content: counter(section) " - ";
+  padding-right: 0.3em;
+  text-align: right;
+}
+
+.container-table{
+  width: 65%;
+  margin: 0 auto;
+}
