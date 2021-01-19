@@ -30,4 +30,4 @@ class ItemForm(forms.ModelForm):
 
     class Meta:
         model = Items
-        fields = ['item_name', 'quantity']
+        fields = ['item_name', 'quantity', 'item_image']

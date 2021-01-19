@@ -21,7 +21,8 @@ def home_view(request):
 def item_create_view(request):
     form = ItemForm()
     if request.method == 'POST':
-        form = ItemForm(request.POST)
+        #request.FILES is for file upload
+        form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             form = ItemForm()
@@ -49,7 +50,7 @@ def item_delete_view(request, pk):
 
 def item_edit_view(request, pk):
     obj = get_object_or_404(Items, pk=pk)
-    form = ItemForm(request.POST or None, instance=obj)
+    form = ItemForm(request.POST or None, request.FILES or None, instance=obj)
     if form.is_valid():
         form.save()
         return redirect('accounts_app:item_create_view')

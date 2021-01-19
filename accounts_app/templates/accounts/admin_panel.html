@@ -38,6 +38,9 @@
     </div>
     <!-- Preloader Start -->
     <header>
+      {% for message in messages%}
+        <p style="text-align:center;">{{message}}</p>
+      {% endfor %}
         <!-- Header Start -->
         <div class="header-area">
             <div class="main-header header-sticky">
@@ -95,14 +98,13 @@
 
             <div class="container">
               <h2>Add item</h2>
-              {% for message in messages%}
-                <p>{{message}}</p>
-              {% endfor %}
 
-              <form action="." method="POST">
+              <form action="." method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{form.as_p}}
-                <input type="submit" value="Submit">
+                <span>{{form.item_name.label}}: {{form.item_name}}</span>
+                <span style="padding-left: 30px;">{{form.quantity.label}}: {{form.quantity}}</span>
+                <span style="padding-left: 30px;">{{form.item_image.label}}: {{form.item_image}}</span>
+                <span><button style="background-color: blue; padding: 22px 14px; border-radius: 10px;" type="submit" class="btn" >Submit</button></span>
               </form>
                 <div class="row product-btn justify-content-between mb-40">
                     <div class="properties__button">
@@ -120,21 +122,27 @@
                       <div class="section-top-border">
                         <h3 class="mb-30">Table</h3>
                         <div class="progress-table-wrap">
-                          <div class="progress-table">
+                          <div class="progress-table progress-numbering">
                             <div class="table-head">
                               <div class="serial">#</div>
                               <div class="country">Item name</div>
                               <div class="visit">Quantity</div>
                               <div class="percentage">Action</div>
                             </div>
-                            <div class="table-row">
-                              <div class="serial">01</div>
-                              <div class="country"> <img src="assets/img/elements/f1.jpg" alt="flag">Canada</div>
-                              <div class="visit">645032</div>
+                            {% for item in object_list %}
+                            <div class="table-row table-numbering">
+                              <div class="serial serial-numbering"></div>
+                              <div class="country">{{item.item_name}}</div>
+                              <div class="visit">{{item.quantity}}</div>
                               <div class="percentage">
-
+                                <form action="{% url 'accounts_app:item_edit_view' item.id %}" method="POST">
+                                  {% csrf_token %}
+                                    <button style="background-color: blue;" type="submit" class="btn btn-info js-update-izdano" >Edit</button>
+                                </form>
+                                    <a href="{% url 'accounts_app:item_delete_view' item.id %}"><button type="button" class="btn btn-danger js-delete-izdano">Delete</button></a>
                                 </div>
                               </div>
+                              {% endfor %}
                             </div>
                           </div>
                         </div>

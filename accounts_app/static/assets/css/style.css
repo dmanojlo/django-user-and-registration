@@ -2312,20 +2312,20 @@ input:focus::-moz-placeholder {
 }
 
 .latest-padding {
-  padding-top: 190px;
+  padding-top: 50px;
   padding-bottom: 135px
 }
 
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
   .latest-padding {
-    padding-top: 190px;
+    padding-top: 50px;
     padding-bottom: 135px
   }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .latest-padding {
-    padding-top: 190px;
+    padding-top: 50px;
     padding-bottom: 135px
   }
 }
@@ -2847,6 +2847,7 @@ input:hover, input:focus {
   position: relative;
   z-index: 1
 }
+
 
 .header-area .main-header .menu-wrapper .main-menu ul li a {
   font-size: 16px;
@@ -6581,6 +6582,18 @@ b, sup, sub, u, del {
   padding: 15px 0;
   border-top: 1px solid #edf3fd;
   display: flex
+}
+
+.progress-numbering {
+  counter-reset: section;
+}
+
+.serial-numbering::before{
+  counter-increment: section;
+  content: counter(section) "";
+  padding-right: 0.3em;
+  text-align: right;
+
 }
 
 .progress-table .table-row .serial, .progress-table .table-row .country, .progress-table .table-row .visit, .progress-table .table-row .percentage {
