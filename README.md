@@ -27,12 +27,18 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+Create new superuser
+```bash
+python manage.py createsuperuser
+```
 
 Run the development server:
 
 ```bash
 python manage.py runserver
 ```
+
+
 
 The project will be available at **127.0.0.1:8000**.
 
