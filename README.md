@@ -1,12 +1,17 @@
 # django-user-and-registration
 Django user and registration practice
 
-## Running the Project Locally
+## Running the project locally
 
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/sibtc/django-chartjs-example.git
+git clone https://github.com/dmanojlo/django-user-and-registration.git
+```
+
+Create your own virtual environment
+```bash
+py -m venv project-name
 ```
 
 Install the requirements:
@@ -18,16 +23,12 @@ pip install -r requirements.txt
 Apply the migrations:
 
 ```bash
+python manage.py makemigrations
 python manage.py migrate
 ```
 
-Load the data from fixtures:
 
-```bash
-python manage.py loaddata countries.json cities.json
-```
-
-Finally, run the development server:
+Run the development server:
 
 ```bash
 python manage.py runserver
