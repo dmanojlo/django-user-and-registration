@@ -1,5 +1,5 @@
 # django-user-and-registration
-Django user and registration practice
+Django user and registration practice. In order to work properly you have to set two groups(admin, customer) in django administration page when you create super user and add super user to admin group.
 
 ## Running the project locally
 
