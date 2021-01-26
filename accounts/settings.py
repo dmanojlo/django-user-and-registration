@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #my_apps
+    'widget_tweaks',
     'accounts_app.apps.AccountsAppConfig'
 ]
 
@@ -135,7 +136,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 # For testing email, outputs only in console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Also for test but is has to modified for reals sending
+# Also for test but is has to modified for real sending
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = '1025'

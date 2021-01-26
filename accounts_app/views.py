@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import F #F() expressions are good for memory
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 # Create your views here.
 from .forms import UserRegistrationForm, ItemForm
@@ -36,28 +37,39 @@ def item_create_view(request):
 def item_list(request):
     queryset = Items.objects.all()
     context = {'object_list': queryset}
-    return render(request, 'accounts/shop_list.html', context)
+    return render(request, 'accounts/item_list.html', context)
 
 def item_delete_view(request, pk):
     obj = get_object_or_404(Items, pk=pk)
+    data = dict()
     if request.method == 'POST':
         obj.delete()
-        return redirect('accounts_app:item_create_view') # ../ goes back a few pages
-    context = {'object': obj}
-    return render(request, 'accounts/item_delete.html', context)
+        data['form_is_valid'] = True
+        queryset = Items.objects.order_by('-id')
+        messages.success(request, 'Item deleted!')
+        data['html_list'] = render_to_string('accounts/table.html', {'object_list': queryset})
+    else:
+        context = {'object': obj}
+        data['html_form'] = render_to_string('accounts/item_delete.html', context, request=request)
+    return JsonResponse(data)
     # obj.delete()
     # return redirect('accounts:item_create_view')
 
 def item_edit_view(request, pk):
     obj = get_object_or_404(Items, pk=pk)
-    form = ItemForm(request.POST or None, request.FILES or None, instance=obj)
+    data = dict()
+    form = ItemForm(request.POST, request.FILES, instance=obj)
     if form.is_valid():
         form.save()
-        return redirect('accounts_app:item_create_view')
+        data['form_is_valid'] = True
+        queryset = Items.objects.order_by('-id')
+        data['html_list'] = render_to_string('accounts/table.html', {'object_list': queryset})
     else:
         form = ItemForm(instance=obj)
     context = {'form':form}
-    return render(request, 'accounts/item_edit.html', context)
+    data['html_form'] = render_to_string('accounts/item_edit.html', context, request=request)
+    return JsonResponse(data)
+
 #Function for decrement quantity
 # def decrement_quantity(request, pk):
 #     decrem = get_object_or_404(Items, pk=pk)

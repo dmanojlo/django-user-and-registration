@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- CSS here -->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
@@ -23,7 +23,19 @@
     <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 </head>
+<style media="screen">
+  .modal-header {
+    display: block;
+}
 
+a {
+  color: #212529;
+}
+
+a:hover{
+  color: blue;
+}
+</style>
 <body>
     <!--? Preloader Start -->
     <div id="preloader-active">
@@ -118,42 +130,22 @@
 
                     <!-- card one -->
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        {% include 'accounts/table.html' %}
 
-                      <div class="section-top-border">
-                        <h3 class="mb-30">Table</h3>
-                        <div class="progress-table-wrap">
-                          <div class="progress-table progress-numbering">
-                            <div class="table-head">
-                              <div class="serial">#</div>
-                              <div class="country">Item name</div>
-                              <div class="visit">Quantity</div>
-                              <div class="percentage">Action</div>
-                            </div>
-                            {% for item in object_list %}
-                            <div class="table-row table-numbering">
-                              <div class="serial serial-numbering"></div>
-                              <div class="country">{{item.item_name}}</div>
-                              <div class="visit">{{item.quantity}}</div>
-                              <div class="percentage">
-                                <form action="{% url 'accounts_app:item_edit_view' item.id %}" method="POST">
-                                  {% csrf_token %}
-                                    <button style="background-color: blue;" type="submit" class="btn btn-info js-update-izdano" >Edit</button>
-                                </form>
-                                    <a href="{% url 'accounts_app:item_delete_view' item.id %}"><button type="button" class="btn btn-danger js-delete-izdano">Delete</button></a>
-                                </div>
-                              </div>
-                              {% endfor %}
-                            </div>
-                          </div>
-                        </div>
                       </div>
 
                 <!-- End Nav Card -->
             </div>
           </div>
         </div>
+        <!-- THE MODAL WE WILL BE USING -->
+        <div class="modal fade" id="myModal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+          </div>
+        </div>
         </section>
-        <!-- Latest Products End -->
     </main>
     <footer>
                 <!-- Footer bottom -->
@@ -170,6 +162,64 @@
     </footer>
 
 <!-- JS here -->
+<script type="text/javascript">
+  $(function () {
+
+  /* Functions */
+
+  var loadForm = function () {
+    var btn = $(this);
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      dataType: 'json',
+      beforeSend: function () {
+        $("#myModal .modal-content").html("");
+        $("#myModal").modal("show");
+      },
+      success: function (data) {
+        $("#myModal .modal-content").html(data.html_form);
+      }
+    });
+  };
+
+  var saveForm = function () {
+    var form = $(this);
+    $.ajax({
+      url: form.attr("action"),
+      data: form.serialize(),
+      type: form.attr("method"),
+      dataType: 'json',
+      success: function (data) {
+        if (data.form_is_valid) {
+          $("#nav-home").html(data.html_list);
+          $("#myModal").modal("hide");
+          //console.log(data.html_list)
+        }
+        else {
+          $("#myModal .modal-content").html(data.html_form);
+        }
+      }
+    });
+    return false;
+  };
+
+
+  /* Binding */
+
+
+  // Edit
+  $("#nav-home").on("click", ".js-edit-load", loadForm);
+  $("#myModal").on("submit", ".js-edit-form", saveForm);
+
+  // Delete
+  $("#nav-home").on("click", ".js-delete-load", loadForm);
+  $("#myModal").on("submit", ".js-delete-form", saveForm);
+
+
+});
+</script>
+
     <!-- All JS Custom Plugins Link Here here -->
     <script src="{% static 'assets/js/vendor/modernizr-3.5.0.min.js' %}"></script>
     <!-- Jquery, Popper, Bootstrap -->

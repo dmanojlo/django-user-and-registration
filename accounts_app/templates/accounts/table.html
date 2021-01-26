@@ -1,0 +1,24 @@
+<div class="section-top-border" id="tab">
+  <h3 class="mb-30">Table</h3>
+  <div class="progress-table-wrap">
+    <div class="progress-table progress-numbering">
+      <div class="table-head">
+        <div class="serial">#</div>
+        <div class="country">Item name</div>
+        <div class="visit">Quantity</div>
+        <div class="percentage">Action</div>
+      </div>
+      {% for item in object_list %}
+      <div class="table-row table-numbering">
+        <div class="serial serial-numbering"></div>
+        <div class="country">{{item.item_name}}</div>
+        <div class="visit">{{item.quantity}}</div>
+        <div class="percentage">
+            <button data-url="{% url 'accounts_app:item_edit_view' item.id %}" data-toggle="modal" style="background-color: blue;" type="button" class="btn btn-info js-edit-load">Edit</button></a>
+            <button type="button"  data-url="{% url 'accounts_app:item_delete_view' item.id %}" data-toggle="modal" class="btn btn-danger js-delete-load">Delete</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
