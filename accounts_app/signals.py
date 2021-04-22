@@ -12,3 +12,4 @@ def customer_profile(sender, instance, created, **kwargs):
         instance.groups.add(group)
 
 #post_save.connect(customer_profile, sender=User)
+#for signals to work we need to override the config files ready method in apps.py
